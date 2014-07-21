@@ -72,7 +72,7 @@ impl Pipeline {
 
         let script_chan = match script_pipeline {
             None => {
-                let (script_port,script_chan) = ScriptChan::new();
+                let (script_port, script_chan) = ScriptChan::new();
                 ScriptTask::create(id,
                                box compositor_chan.clone(),
                                layout_chan.clone(),

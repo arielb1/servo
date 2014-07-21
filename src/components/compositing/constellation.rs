@@ -448,7 +448,7 @@ impl<LTF: LayoutTaskFactory> Constellation<LTF> {
 
         let new_id = self.get_next_pipeline_id();
         let pipeline = self.new_pipeline(new_id, subpage_id, None,
-                                         parse_url("about:failure", None));
+                                         Url::parse("about:failure").unwrap());
 
         self.pending_frames.push(FrameChange{
             before: Some(pipeline_id),
@@ -578,16 +578,18 @@ impl<LTF: LayoutTaskFactory> Constellation<LTF> {
                            source_url.port == url.port) && sandbox == IFrameUnsandboxed;
         // FIXME(tkuehn): Need to follow the standardized spec for checking same-origin
         // Reuse the script task if the URL is same-origin
-        if same_script {
+        let new_pipeline = if same_script {
             debug!("Constellation: loading same-origin iframe at {:?}", url);
+            Some(source_pipeline.clone())
         } else {
             debug!("Constellation: loading cross-origin iframe at {:?}", url);
+            None
         };
 
         let pipeline = self.new_pipeline(
             next_pipeline_id,
             Some(subpage_id),
-            if same_script { Some(source_pipeline.clone()) } else { None },
+            new_pipeline,
             url
         );
 
