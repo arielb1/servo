@@ -29,7 +29,6 @@ use servo_net::resource_task;
 use servo_util::geometry::PagePx;
 use servo_util::opts::Opts;
 use servo_util::time::TimeProfilerChan;
-use servo_util::url::parse_url;
 use servo_util::task::spawn_named;
 use std::cell::RefCell;
 use std::mem::replace;
